@@ -1,6 +1,14 @@
 #
 # Makefile for MMC/SD host controller drivers
 #
+KVERSION := $(shell uname -r)
+KDIR := /lib/modules/$(KVERSION)/build M=$(PWD) modules
 
-obj-$(CONFIG_MMC_SDHCI)		+= sdhci.o
-obj-$(CONFIG_MMC_SDHCI_PCI)	+= sdhci-pci.o
+obj-m	+= sdhci.o
+obj-m	+= sdhci-pci.o
+
+all:
+	$(MAKE) -C $(KDIR) M=$(PWD) modules
+
+clean:
+	rm -f *.o *.ko Module.symvers modules.order *.mod.c
